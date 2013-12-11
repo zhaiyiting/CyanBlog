@@ -130,6 +130,8 @@ class Writer(object):
 
     def __convert_post(self):
         for post in self.post_list:
-            pass
-
+            build_post_path = osp.join(self.site_post_dir, post.filename)
+            output_file = codecs.open(build_post_path, 'w', encoding="utf-8")
+            post_html = markdown.markdown(post.content)
+            output_file.write(post_html)
 
