@@ -2,10 +2,14 @@ import time
 import os
 import os.path as osp
 import cPickle
+import shutil
 import markdown
+import codecs
 
 history_path = osp.join("_history", "history")
 post_dir = "_post"
+site_dir = "_site"
+static_dir = "_static"
 
 class Post(object):
 
@@ -87,7 +91,7 @@ class Reader(object):
                 return
             post_content = content[i:]
             post_content = '\n'.join(post_content)
-            post_content = markdown.markdown(post_content)
+            post_content = post_content.decode("gbk")
                         
         post_name = osp.basename(post_path)
         new_post = Post(post_name)
@@ -107,6 +111,25 @@ class Reader(object):
 
 
 class Writer(object):
-    pass
+    site_post_dir = osp.join(site_dir, "post")
+    site_static_dir = osp.join(site_dir, "static")
+
+    def __init__(self, post_list):
+        self.post_list = post_list
+
+
+    def __pre_build(self):
+        # recreate the site folder
+        shutil.rmtree(site_dir)
+        # make new
+        os.mkdir(site_dir)
+        # make post dir
+        os.mkdir(self.site_post_dir)
+        # copy static dir
+        shutil.copy(static_dir, self.site_static_dir)
+
+    def __convert_post(self):
+        for post in self.post_list:
+            pass
 
 
