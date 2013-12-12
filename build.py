@@ -1,3 +1,5 @@
+import os
+import os.path as osp
 author_name = "luxiaolu"
 title = "Dai Daily"
 
@@ -26,3 +28,25 @@ tmplate = mtp.Template(filename="base.html")
 tmplate.output_encoding = 'utf-8'
 with open("index.html", 'w') as f:
     f.write(tmplate.render(g_nsp=g_nsp, cpage=home_page)) 
+
+
+class PostBuilder(object):
+    template_dir = "_template"
+    template_name = "post.html"
+
+    def __init__(self, post_list):
+        self.post_list = post_list
+        self.template_path = osp.join(template_dir, template_name)
+        self.html = ""
+
+    def build_post(self):
+        pre_post_list = self.post_list[:-1]
+        pre_post_list.insert(0,None)
+        post_post_list = self.post_list[1:]
+        post_post_list.append(None)
+        for i,post in enumerate(self.post_list):
+            tmp_late = mtp.Template(filename=self.template_path)
+            tmp_late.output_encoding = 'utf-8'
+            self.html = tmp_late.render(pre_post = pre_post_list[i],
+                                        post = post,
+                                        post_post = post_post_list[i])

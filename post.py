@@ -25,6 +25,7 @@ class Post(object):
         # never use the same name for different post
         self.filename = filename
         self.content = ""
+        self.html = ""
 
     def new_post(self, post_title=None, post_category=None, post_tags=None,
             post_content = ""):
@@ -60,8 +61,9 @@ class Reader(object):
         post_list = os.listdir(post_dir)
         for post_name in post_list:
             post_path = osp.join(post_path, post_name)
+            self.__parse_post(post_path)
 
-    def parse_post(self, post_path):
+    def __parse_post(self, post_path):
         post_title = None
         post_category = None
         post_tags = None
@@ -116,6 +118,8 @@ class Writer(object):
 
     def __init__(self, post_list):
         self.post_list = post_list
+        self.__pre_build()
+        self.__convert_post()
 
 
     def __pre_build(self):
@@ -131,7 +135,8 @@ class Writer(object):
     def __convert_post(self):
         for post in self.post_list:
             build_post_path = osp.join(self.site_post_dir, post.filename)
-            output_file = codecs.open(build_post_path, 'w', encoding="utf-8")
+            #output_file = codecs.open(build_post_path, 'w', encoding="utf-8")
             post_html = markdown.markdown(post.content)
-            output_file.write(post_html)
+            #output_file.write(post_html)
+            post.html = post_html
 

@@ -1,28 +1,40 @@
-<article class="content">
-    <section class="post">
-         <br>
-            <div>
-                <a href="http://jeffche.com/www/fangzhou?pst=pre" title="中短期项目管理思考"><< 中短期项目管理思考</a>
-              &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-                <a href="http://jeffche.com/skill/pagecache?pst=pre" title="How-To 网站静态化——预先生成静态化文件">How-To 网站静态化——预先生成静态化文件 >></a>
-            </div>
-            <hr>
-        <br />
-        <span class="license">
-          Published under <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">(CC) BY-NC-SA</a>
-        </span>
+<%inherit file="base.html"/>
+<%def name="post">
+    <article class="content">
+        <section class="post">
+             <br>
+                <div>
+                    %if pre_post:
+                        <a href=${"/" + pre_post.filename}title=${pre_post.title}><<${pre_post.filename}</a>
+                    %else:
+                        None
+                    %endif
+                          &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                    %if post_post: 
+                        <a href=${"/" + pre_post.filename}title=${pre_post.title}><<${pre_post.filename}</a>
+                    %else:
+                        None
+                    %endif
+                </div>
+                <hr>
+            <br />
+            <span class="license">
+              Published under <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">(CC) BY-NC-SA</a>
+            </span>
 
-        <span class="categories">
-          in categories
-          <a href="http://jeffche.com/categories/#www" title="www">www</a>&nbsp;
-        </span>
+            <span class="categories">
+              in categories
+              <a href=${common.categorie_link} title=${post.categorie}>${post.categorie}</a>&nbsp;
+            </span>
 
-        <span class="tags">
-          tagged with 
-          <a href="http://jeffche.com/tags/#运营" title="运营">运营</a>&nbsp;
-          <a href="http://jeffche.com/tags/#读书" title="读书">读书</a>&nbsp;
-        </span>
-    </section>
-</article>
+            <span class="tags">
+              tagged with 
+              %for tag in post.tags:
+                  <a href=${common.tag_link} title=${tag}>${tag}</a>&nbsp;
+              %endfor
+            </span>
+        </section>
+    </article>
+</%def>
 
 
