@@ -1,40 +1,43 @@
+## -*- coding: utf-8 -*-
 <%inherit file="base.html"/>
-<%def name="post">
+<%block name="post_section">
     <article class="content">
-        <section class="post">
-             <br>
-                <div>
-                    %if pre_post:
-                        <a href=${"/" + pre_post.filename}title=${pre_post.title}><<${pre_post.filename}</a>
-                    %else:
-                        None
-                    %endif
-                          &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-                    %if post_post: 
-                        <a href=${"/" + pre_post.filename}title=${pre_post.title}><<${pre_post.filename}</a>
-                    %else:
-                        None
-                    %endif
-                </div>
-                <hr>
-            <br />
-            <span class="license">
-              Published under <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">(CC) BY-NC-SA</a>
-            </span>
+        <div>
+            %if pre_post:
+                <a href=${pre_post.link} title=${pre_post.title}><< ${pre_post.title}</a>
+            %else:
+                None
+            %endif
+                  &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+            %if post_post: 
+                <a href=${post_post.link} title=${post_post.title}>${post_post.title} >></a>
+            %else:
+                None
+            %endif
+        </div>
+        <hr>
+            <section class="post">
+            ${post.html}
+            </section>
+            <section class="meta">
+                <br>
+                <span class="license">
+                  Published under <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">(CC) BY-NC-SA</a>
+                </span>
 
-            <span class="categories">
-              in categories
-              <a href=${common.categorie_link} title=${post.categorie}>${post.categorie}</a>&nbsp;
-            </span>
+                <span class="categories">
+                  in categories
+                  <a href=${common.category_link} title=${post.category}>${post.category}</a>&nbsp;
+                </span>
 
-            <span class="tags">
-              tagged with 
-              %for tag in post.tags:
-                  <a href=${common.tag_link} title=${tag}>${tag}</a>&nbsp;
-              %endfor
-            </span>
-        </section>
+                <span class="tags">
+                  tagged with 
+                  %for tag in post.tags:
+                      <a href=${common.tag_link} title=${tag}>${tag}</a>&nbsp;
+                  %endfor
+                </span>
+            </section>
     </article>
-</%def>
+</%block>
 
 

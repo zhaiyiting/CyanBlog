@@ -1,15 +1,11 @@
+import sys
 import time
 import os
 import os.path as osp
 import cPickle
 import shutil
 import markdown
-import codecs
-
-history_path = osp.join("_history", "history")
-post_dir = "_post"
-site_dir = "_site"
-static_dir = "_static"
+import config as common
 
 class Post(object):
 
@@ -24,6 +20,7 @@ class Post(object):
         # use post's file mame to identify one post
         # never use the same name for different post
         self.filename = filename
+        self.link = "/post/" + self.filename + ".html"
         self.content = ""
         self.html = ""
 
@@ -47,21 +44,25 @@ class Post(object):
 
 
 class Reader(object):
-    def __init__():
+    def __init__(self):
         self.history_post_list = []
         self.history_post_name_list = []
         self.current_post_list = []
 
     def get_history_post(self):
-        if osp.exists(history_path):
-            self.history_post_list = cPickle.load(history_path)
+        if osp.exists(common.history_path):
+            self.history_post_list = cPickle.load(common.history_path)
             self.history_post_name_list = [post.filename for post in self.history_post_list]
 
     def get_current_post(self):
-        post_list = os.listdir(post_dir)
+        post_list = os.listdir(common.post_dir)
         for post_name in post_list:
-            post_path = osp.join(post_path, post_name)
+            post_path = osp.join(common.post_dir, post_name)
             self.__parse_post(post_path)
+        # sort post
+        def s(post):
+            return post.time
+        self.current_post_list.sort(key = s)
 
     def __parse_post(self, post_path):
         post_title = None
@@ -72,6 +73,8 @@ class Reader(object):
             for i,line in enumerate(content):
                 line = line.strip()
                 tmp_list = line.split(":")
+                for j in range(len(tmp_list)) :
+                    tmp_list[j] = tmp_list[j].strip()
                 if not line:
                     continue
                 if line.startswith("~~~"):
@@ -90,31 +93,31 @@ class Reader(object):
             if i == len(content):
                 # no separat line found
                 print "Error: no separate line found in post{0}".format(post_path)
+                sys.exit()
                 return
-            post_content = content[i:]
+            post_content = content[i+1:]
             post_content = '\n'.join(post_content)
             post_content = post_content.decode("gbk")
                         
         post_name = osp.basename(post_path)
+        post_name = post_name.split(".")[0]
         new_post = Post(post_name)
         if post_name in self.history_post_name_list:
             index = self.history_post_name_list.index(post_name)
             new_post.update(self.history_post_list[index])
-        new_post.new_post(post_title = post_title,
-                          post_category = post_category,
-                          post_tags = post_tags,
-                          post_content = post_content)
+        new_post.new_post(post_title=post_title,
+                          post_category=post_category,
+                          post_tags=post_tags,
+                          post_content=post_content)
         self.current_post_list.append(new_post)
 
 
     def dump(self):
-        with open(history_path, 'w') as f:
-        cPickle.dump(self.current_post_list, f)
+        with open(common.history_path, 'w') as f:
+            cPickle.dump(self.current_post_list, f)
 
 
 class Writer(object):
-    site_post_dir = osp.join(site_dir, "post")
-    site_static_dir = osp.join(site_dir, "static")
 
     def __init__(self, post_list):
         self.post_list = post_list
@@ -124,19 +127,19 @@ class Writer(object):
 
     def __pre_build(self):
         # recreate the site folder
-        shutil.rmtree(site_dir)
+        if osp.exists(common.site_dir):
+            shutil.rmtree(common.site_dir)
         # make new
-        os.mkdir(site_dir)
+        os.mkdir(common.site_dir)
         # make post dir
-        os.mkdir(self.site_post_dir)
+        os.mkdir(common.site_post_dir)
         # copy static dir
-        shutil.copy(static_dir, self.site_static_dir)
+        shutil.copytree(common.static_dir, common.site_static_dir)
 
     def __convert_post(self):
         for post in self.post_list:
-            build_post_path = osp.join(self.site_post_dir, post.filename)
+            build_post_path = osp.join(common.site_post_dir, post.filename)
             #output_file = codecs.open(build_post_path, 'w', encoding="utf-8")
             post_html = markdown.markdown(post.content)
-            #output_file.write(post_html)
             post.html = post_html
-
+            #output_file.write(post_html)

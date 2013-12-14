@@ -1,12 +1,12 @@
-
+## -*- coding: utf-8 -*-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <meta name="author" content=${g_nsp.author_name} />
-    <title>${g_nsp.title}</title>
+    <meta name="author" content=${common.author_name} />
+    <title>${common.blog_title}</title>
     <link rel="shortcut icon" href="/favicon.ico">
-    <link href=${g_nsp.feed_link} rel="alternate" title=${g_nsp.author_name} type="application/atom+xml" />
+    <link href=${common.rss_link} rel="alternate" title=${common.author_name} type="application/atom+xml" />
     <link rel="stylesheet" href="/static/default/css/style.css">
     <link rel="stylesheet" href="/static/default/css/highlight.css">
     <script type="text/javascript" src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
@@ -15,16 +15,16 @@
     <div id="container">
       <div id="main" role="main">
         <header>
-        ##<h1>${g_nsp.current_page.title}</h1>
-        <h1>${cpage.title}</h1>
+        <h1>${title}</h1>
         </header>
         <nav>
-        %for page in g_nsp.page_list:
+        %for page in common.page_list:
         <span><a title=${page.title} href=${page.link}>${page.title}</a></span>
         %endfor
         </nav>
-        {% block post %}
-        {% endblock %}
+        <%block name="post_section"/>
+        <%block name="home_section"/>
+        <%block name="list_section"/>
       </div>
     </div>
   </body>
