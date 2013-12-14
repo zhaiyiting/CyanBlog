@@ -51,7 +51,8 @@ class Reader(object):
 
     def get_history_post(self):
         if osp.exists(common.history_path):
-            self.history_post_list = cPickle.load(common.history_path)
+            history = open(common.history_path, 'r')
+            self.history_post_list = cPickle.load(history)
             self.history_post_name_list = [post.filename for post in self.history_post_list]
 
     def get_current_post(self):
@@ -93,7 +94,6 @@ class Reader(object):
             if i == len(content):
                 # no separat line found
                 print "Error: no separate line found in post{0}".format(post_path)
-                sys.exit()
                 return
             post_content = content[i+1:]
             post_content = '\n'.join(post_content)
@@ -114,6 +114,9 @@ class Reader(object):
 
     def dump(self):
         with open(common.history_path, 'w') as f:
+            for post in self.current_post_list:
+                del post.content
+                del post.html
             cPickle.dump(self.current_post_list, f)
 
 
@@ -129,6 +132,7 @@ class Writer(object):
         # recreate the site folder
         if osp.exists(common.site_dir):
             shutil.rmtree(common.site_dir)
+        time.sleep(0.5)
         # make new
         os.mkdir(common.site_dir)
         # make post dir
