@@ -91,14 +91,14 @@ class Reader(object):
                         post_category = tmp_list[1]
                 elif tmp_list[0].startswith("tag"):
                     if len(tmp_list) > 1:
-                        tag_list = tmp_list[1].split(";")
+                        tag_list = tmp_list[1].split(",")
                         post_tags = tag_list
             if i == len(content):
                 # no separat line found
                 print "Error: no separate line found in post{0}".format(post_path)
                 return
             post_content = content[i+1:]
-            post_content = '\n'.join(post_content)
+            post_content = ''.join(post_content)
             post_content = post_content.decode("gbk")
                         
         post_name = osp.basename(post_path)
