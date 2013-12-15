@@ -5,6 +5,8 @@ import os.path as osp
 import cPickle
 import shutil
 import markdown
+import re
+import pygments as pm
 import config as common
 
 class Post(object):
@@ -89,7 +91,7 @@ class Reader(object):
                         post_category = tmp_list[1]
                 elif tmp_list[0].startswith("tag"):
                     if len(tmp_list) > 1:
-                        tag_list = tmp_list[1].split(":")
+                        tag_list = tmp_list[1].split(";")
                         post_tags = tag_list
             if i == len(content):
                 # no separat line found
@@ -144,6 +146,20 @@ class Writer(object):
         for post in self.post_list:
             build_post_path = osp.join(common.site_post_dir, post.filename)
             #output_file = codecs.open(build_post_path, 'w', encoding="utf-8")
-            post_html = markdown.markdown(post.content)
+            md = markdown.Markdown(safe_mode=False, output_format='xhtml',)
+            post_html = md.convert(self.__code(post.content))
             post.html = post_html
             #output_file.write(post_html)
+
+    def __code(self, raw):
+        """pygments render"""
+        formatter = pm.formatters.HtmlFormatter(noclasses=False)
+        pyg_patten = re.compile(r'```(\w+)(.*?)```', re.S)
+        def repl(m):
+            try:
+                lexer = pm.lexers.get_lexer_by_name(m.group(1))
+            except:
+                lexer = pm.lexers.TextLexer()
+            code = pm.highlight(m.group(2), lexer, formatter)
+            return code
+        return pyg_patten.sub(repl, raw)

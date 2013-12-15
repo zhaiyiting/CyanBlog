@@ -2,7 +2,29 @@
 <%inherit file="base.html"/>
 <%block name="post_section">
     <article class="content">
-        <div>
+        <section class="post">
+        ${post.html}
+        </section>
+        <section class="meta">
+            <br>
+            <span class="license">
+              Published under <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">(CC) BY-NC-SA</a>
+            </span>
+
+            <span class="categories">
+              in categories
+              <a href=${common.category_link} title=${post.category}>${post.category}</a>&nbsp;
+            </span>
+
+            <span class="tags">
+              tagged with 
+              %for tag in post.tags:
+                  <a href=${common.tag_link} title=${tag}>${tag}</a>&nbsp;
+              %endfor
+            </span>
+        </section>
+        <hr>
+        <div class="pre_post">
             %if pre_post:
                 <a href=${pre_post.link} title=${pre_post.title}><< ${pre_post.title}</a>
             %else:
@@ -15,28 +37,6 @@
                 None
             %endif
         </div>
-        <hr>
-            <section class="post">
-            ${post.html}
-            </section>
-            <section class="meta">
-                <br>
-                <span class="license">
-                  Published under <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">(CC) BY-NC-SA</a>
-                </span>
-
-                <span class="categories">
-                  in categories
-                  <a href=${common.category_link} title=${post.category}>${post.category}</a>&nbsp;
-                </span>
-
-                <span class="tags">
-                  tagged with 
-                  %for tag in post.tags:
-                      <a href=${common.tag_link} title=${tag}>${tag}</a>&nbsp;
-                  %endfor
-                </span>
-            </section>
 <!-- Duoshuo Comment BEGIN -->
 	<div class="ds-thread"></div>
 <script type="text/javascript">

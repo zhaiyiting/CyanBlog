@@ -1,0 +1,29 @@
+## Cyan
+
+------
+Cyan is a simple static blog generator. 
+
+##Demo
+* [DEMO][1]
+
+## Usage
+
+* Use **markdown** to write your post.
+* <pre>
+title: Test Post
+category: Life
+tags: test_tag1,test_tag2
+~~~~~~~~~~~~~
+write want you want.
+</pre>
+*  only 'title' is a must.
+*  put all yourt post under **_post** folder.
+*  run **main.py** to generate the whole blog, then all things you can find in **site** folder.
+*  specify the blog title, author, blog link info in **config.py**.
+
+## LICENSE
+The MIT License  
+Copyright (c) 2013 luxiaolu
+
+[1]: http://luxiaolu.github.io
+
