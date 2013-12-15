@@ -141,6 +141,8 @@ class Writer(object):
         os.mkdir(common.site_post_dir)
         # copy static dir
         shutil.copytree(common.static_dir, common.site_static_dir)
+        # copy _post dir
+        shutil.copytree(common.post_dir, common.site_post_dir_mk)
 
     def __convert_post(self):
         for post in self.post_list:

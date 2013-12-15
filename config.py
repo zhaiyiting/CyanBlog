@@ -35,5 +35,6 @@ history_path = osp.join("_history", "history")
 
 site_dir = "site"
 site_post_dir = "site/post"
+site_post_dir_mk = "site/_post"
 site_static_dir = "site/static"
 
