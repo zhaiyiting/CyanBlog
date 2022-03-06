@@ -3,13 +3,13 @@
 ------
 Cyan is a simple static blog generator. 
 
-##Demo
+## Demo
 * [DEMO][1]
 
 ## Usage
 
 * Use **markdown** to write your post.
-* <pre>
+<pre>
 title: Test Post
 category: Life
 tags: test_tag1,test_tag2
