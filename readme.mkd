@@ -3,8 +3,6 @@
 ------
 Cyan is a simple static blog generator. 
 
-## Demo
-* [DEMO][1]
 
 ## Usage
 
@@ -23,7 +21,4 @@ write want you want.</pre>
 
 ## LICENSE
 The MIT License  
-Copyright (c) 2013 luxiaolu
-
-[1]: http://luxiaolu.github.io
-
+Copyright (c) 2013 zhaiyiting
